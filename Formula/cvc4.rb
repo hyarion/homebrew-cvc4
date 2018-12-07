@@ -34,6 +34,10 @@ class Cvc4 < Formula
       args << "CXXFLAGS=-I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers/"
     end
 
+    # enable redirect (301) with curl, fixed in later versions of cvc4
+    inreplace "contrib/get-antlr-3.4" do |s|
+      s.gsub! "curl \"", "curl -L \""
+    end
     system "contrib/get-antlr-3.4"
     system "./autogen.sh" if build.head?
     system "./configure", *args
